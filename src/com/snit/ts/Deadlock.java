@@ -3,10 +3,10 @@ package com.snit.ts;
 public class Deadlock {
 
 
-  private final static Object MONITOR1 = new Object();
-  private final static Object MONITOR2 = new Object();
-  private final static Object MONITOR3 = new Object();
-  private final static Object MONITOR4 = new Object();
+  private static final Object MONITOR1 = new Object();
+  private static final Object MONITOR2 = new Object();
+  private static final Object MONITOR3 = new Object();
+  private static final Object MONITOR4 = new Object();
 
 
   public static void main(String[] args) throws InterruptedException {
