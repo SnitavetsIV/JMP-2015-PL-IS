@@ -3,23 +3,23 @@ package com.snit.ts;
 public class Deadlock {
 
 
-  private static Object obj1 = new Object();
-  private static Object obj2 = new Object();
-  private static Object obj3 = new Object();
-  private static Object obj4 = new Object();
+  private final static Object MONITOR1 = new Object();
+  private final static Object MONITOR2 = new Object();
+  private final static Object MONITOR3 = new Object();
+  private final static Object MONITOR4 = new Object();
 
 
   public static void main(String[] args) throws InterruptedException {
     Thread t1 = new Thread(new Runnable() {
       @Override
       public void run() {
-        synchronized (obj1) {
+        synchronized (MONITOR1) {
           try {
-            System.out.println("Thread1: obj1 locked");
+            System.out.println("Thread1: MONITOR1 locked");
             Thread.sleep(1000);
-            System.out.println("Thread1: trying to lock obj2");
-            synchronized (obj2) {
-              System.out.println("Thread1: obj2 locked");
+            System.out.println("Thread1: trying to lock MONITOR2");
+            synchronized (MONITOR2) {
+              System.out.println("Thread1: MONITOR2 locked");
             }
           } catch (InterruptedException e) {
             e.printStackTrace();
@@ -30,13 +30,13 @@ public class Deadlock {
     Thread t2 = new Thread(new Runnable() {
       @Override
       public void run() {
-        synchronized (obj2) {
+        synchronized (MONITOR2) {
           try {
-            System.out.println("Thread2: obj2 locked");
+            System.out.println("Thread2: MONITOR2 locked");
             Thread.sleep(1000);
-            System.out.println("Thread2: trying to lock obj3");
-            synchronized (obj3) {
-              System.out.println("Thread2: obj3 locked");
+            System.out.println("Thread2: trying to lock MONITOR3");
+            synchronized (MONITOR3) {
+              System.out.println("Thread2: MONITOR3 locked");
             }
           } catch (InterruptedException e) {
             e.printStackTrace();
@@ -47,13 +47,13 @@ public class Deadlock {
     Thread t3 = new Thread(new Runnable() {
       @Override
       public void run() {
-        synchronized (obj3) {
+        synchronized (MONITOR3) {
           try {
-            System.out.println("Thread3: obj3 locked");
+            System.out.println("Thread3: MONITOR3 locked");
             Thread.sleep(1000);
-            System.out.println("Thread3: trying to lock obj4");
-            synchronized (obj4) {
-              System.out.println("Thread3: obj4 locked");
+            System.out.println("Thread3: trying to lock MONITOR4");
+            synchronized (MONITOR4) {
+              System.out.println("Thread3: MONITOR4 locked");
             }
           } catch (InterruptedException e) {
             e.printStackTrace();
@@ -64,13 +64,13 @@ public class Deadlock {
     Thread t4 = new Thread(new Runnable() {
       @Override
       public void run() {
-        synchronized (obj4) {
+        synchronized (MONITOR4) {
           try {
-            System.out.println("Thread4: obj4 locked");
+            System.out.println("Thread4: MONITOR4 locked");
             Thread.sleep(1000);
-            System.out.println("Thread4: trying to lock obj1");
-            synchronized (obj1) {
-              System.out.println("Thread4: obj1 locked");
+            System.out.println("Thread4: trying to lock MONITOR1");
+            synchronized (MONITOR1) {
+              System.out.println("Thread4: MONITOR1 locked");
             }
           } catch (InterruptedException e) {
             e.printStackTrace();
