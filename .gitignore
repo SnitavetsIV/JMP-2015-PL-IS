@@ -1,7 +1,7 @@
 /JMP-2015-PL-IS.iml
-/ts/ts.iml
-/mt/mt.iml
-/mm/mm.iml
+/Multithreading/Multithreading.iml
+/MemoryManagement/MemoryManagement.iml
+/Troubleshooting/Troubleshooting.iml
 *.class
 
 # Mobile Tools for Java (J2ME)

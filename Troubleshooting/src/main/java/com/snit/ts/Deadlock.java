@@ -13,7 +13,12 @@ public class Deadlock {
   private static final Object MONITOR3 = new Object();
   private static final Object MONITOR4 = new Object();
 
-
+  /**
+   * Rud 4 threads to lock 4 monitors and make deadlock
+   *
+   * @param args ignored
+   * @throws InterruptedException
+   */
   public static void main(String[] args) throws InterruptedException {
     Thread t1 = new Thread(new Runnable() {
       @Override

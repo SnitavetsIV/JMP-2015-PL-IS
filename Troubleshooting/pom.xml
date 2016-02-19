@@ -9,9 +9,9 @@
   </parent>
 
   <groupId>com.snit.ts</groupId>
-  <artifactId>ts</artifactId>
+  <artifactId>troubleshooting</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>ts</name>
+  <name>troubleshooting</name>
   <url>http://maven.apache.org</url>
 
   <properties>

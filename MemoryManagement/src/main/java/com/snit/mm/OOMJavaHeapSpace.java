@@ -5,8 +5,14 @@ package com.snit.mm;
  *
  * @author Ilya Snitavets
  */
-public class OOMJavaHearSpace {
+public class OOMJavaHeapSpace {
 
+  /**
+   *
+   *  try make heap error
+   *
+   * @param args ignored
+   */
   public static void main(String[] args) {
     StringBuilder sb = new StringBuilder();
     while (true) {

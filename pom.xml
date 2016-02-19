@@ -8,9 +8,9 @@
   <name>JMP-2015-PL-IS</name>
 
   <modules>
-    <module>mm</module>
-    <module>mt</module>
-    <module>ts</module>
+    <module>memorymanagement</module>
+    <module>multithreading</module>
+    <module>troubleshooting</module>
   </modules>
 
   <build>

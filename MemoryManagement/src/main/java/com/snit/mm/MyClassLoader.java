@@ -15,6 +15,12 @@ public class MyClassLoader extends ClassLoader {
     super(parent);
   }
 
+  /**
+   *
+   * @param name class name. If 'reflection.MyObject' will use classes\com\snit\mm\OOMPermgenSpace.class
+   * @return loaded class
+   * @throws ClassNotFoundException
+   */
   public Class loadClass(String name) throws ClassNotFoundException {
     if (!"reflection.MyObject".equals(name)) {
       return super.loadClass(name);
