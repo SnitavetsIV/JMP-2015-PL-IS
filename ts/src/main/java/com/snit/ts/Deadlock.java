@@ -1,5 +1,10 @@
 package com.snit.ts;
 
+/**
+ * Deadlock with 4 shared resources
+ *
+ * @author Ilya Snitavets
+ */
 public class Deadlock {
 
 

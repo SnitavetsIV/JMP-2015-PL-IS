@@ -1,7 +1,12 @@
 package com.snit.mm;
 
-import java.util.ArrayList;
+import java.util.*;
 
+/**
+ * Java.MP.C4.M1.MemoryManagement Default Task03
+ *
+ * @author Ilya Snitavets
+ */
 public class OOMPermgenSpace {
 
   public static void main(String[] args) {
