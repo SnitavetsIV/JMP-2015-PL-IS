@@ -1,45 +1,58 @@
 package com.snit.cl.entity;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
 /**
  * @author Ilya Snitavets
  */
+@Entity
+@Table(name = "User")
 public class Player {
 
-    private int id = -1;
-    private String name;
-    private boolean deleted;
+  @Id
+  @Column(name = "Id")
+  private int id = -1;
 
-    public int getId() {
-        return id;
-    }
+  @Column(name = "Name")
+  private String name;
 
-    public void setId(int id) {
-        this.id = id;
-    }
+  @Column(name = "Deleted")
+  private boolean deleted;
 
-    public String getName() {
-        return name;
-    }
+  public int getId() {
+    return id;
+  }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+  public void setId(int id) {
+    this.id = id;
+  }
 
-    public boolean isDeleted() {
-        return deleted;
-    }
+  public String getName() {
+    return name;
+  }
 
-    public void setDeleted(boolean deleted) {
-        this.deleted = deleted;
-    }
+  public void setName(String name) {
+    this.name = name;
+  }
 
-    @Override
-    public String toString() {
-        return "Player{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", deleted=" + deleted +
-                '}';
-    }
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
+  @Override
+  public String toString() {
+    return "Player{" +
+        "id=" + id +
+        ", name='" + name + '\'' +
+        ", deleted=" + deleted +
+        '}';
+  }
 
 }
