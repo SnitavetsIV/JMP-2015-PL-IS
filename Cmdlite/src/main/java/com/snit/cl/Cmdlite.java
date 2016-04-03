@@ -16,16 +16,31 @@ public class Cmdlite {
 
   private static final PlayerService PLAYER_SERVICE = PlayerService.getInstance();
   private static final GameService GAME_SERVICE = GameService.getInstance();
+  private static final Options OPTIONS = buildOptions();
+
 
   public static void main(String[] args) {
     System.out.println(PLAYER_SERVICE.getAllPlayers());
     System.out.println(GAME_SERVICE.getAllGames());
+    printHelp(
+        OPTIONS,
+        80,
+        "Options",
+        "-- HELP --",
+        3,
+        5,
+        true,
+        System.out
+    );
   }
 
   private static Options buildOptions() {
     Options options = new Options();
-    options.addOption(new Option("l", "list available entities"));
+    Option listEntities = new Option("l", /*hasArgs*/ true, "list available entities");
+    listEntities.setArgName("match");
 
+
+    options.addOption(listEntities);
     return options;
   }
 
