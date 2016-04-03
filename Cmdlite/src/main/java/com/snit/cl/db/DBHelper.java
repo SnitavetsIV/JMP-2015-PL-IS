@@ -1,6 +1,5 @@
 package com.snit.cl.db;
 
-import com.snit.cl.entity.Player;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -35,10 +34,10 @@ public class DBHelper {
   }
 
   @SuppressWarnings("unchecked")
-  public List<Player> getAllPlayers() {
-    ArrayList<Player> players = new ArrayList<>();
+  public <T> List<T> getAllEntity(Class entityClass) {
+    ArrayList<T> players = new ArrayList<>();
     try (Session session = sessionFactory.openSession()) {
-      players.addAll(session.createCriteria(Player.class).list());
+      players.addAll(session.createCriteria(entityClass).list());
     }
     return players;
   }
