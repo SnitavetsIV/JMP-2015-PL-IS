@@ -26,4 +26,11 @@ public class PlayerService {
     return DB_HELPER.getAllEntity(Player.class);
   }
 
+  public Player createPlayer(String name) {
+    Player player = new Player();
+    player.setName(name);
+    DB_HELPER.savePlayer(player);
+    return player;
+  }
+
 }

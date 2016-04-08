@@ -1,5 +1,7 @@
 package com.snit.cl.db;
 
+import com.snit.cl.entity.Player;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -40,6 +42,23 @@ public class DBHelper {
       players.addAll(session.createCriteria(entityClass).list());
     }
     return players;
+  }
+
+  public boolean savePlayer(Player player) {
+    boolean isSuccess = false;
+    if (player == null) {
+      return false;
+    }
+    try (Session session = sessionFactory.openSession()) {
+      session.save(player);
+      session.flush();
+      isSuccess = true;
+    } catch (HibernateException e) {
+      isSuccess = false;
+      System.out.println(e);
+    }
+    return isSuccess;
+
   }
 
 }
