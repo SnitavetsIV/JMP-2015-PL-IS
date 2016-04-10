@@ -10,19 +10,24 @@ import javax.persistence.*;
 public class Game {
 
   @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "Id")
   private int id = -1;
 
   @ManyToOne
+  @JoinColumn(name = "BlueAttack")
   private Player blueAttack;
 
   @ManyToOne
+  @JoinColumn(name = "BlueDefence")
   private Player blueDefence;
 
   @ManyToOne
+  @JoinColumn(name = "RedAttack")
   private Player redAttack;
 
   @ManyToOne
+  @JoinColumn(name = "RedDefence")
   private Player redDefence;
 
   @Column(name = "ScoreBlue")
@@ -31,6 +36,8 @@ public class Game {
   @Column(name = "ScoreRed")
   private int scoreRed;
 
+  @Column(name = "Deleted")
+  private boolean deleted;
 
   public int getId() {
     return id;
@@ -88,6 +95,14 @@ public class Game {
     this.scoreRed = scoreRed;
   }
 
+  public boolean isDeleted() {
+    return deleted;
+  }
+
+  public void setDeleted(boolean deleted) {
+    this.deleted = deleted;
+  }
+
   @Override
   public String toString() {
     return "Game{" +
@@ -98,6 +113,7 @@ public class Game {
         ", redDefence=" + redDefence +
         ", scoreBlue=" + scoreBlue +
         ", scoreRed=" + scoreRed +
+        (deleted ? ", deleted" : "") +
         '}';
   }
 }

@@ -1,7 +1,10 @@
 package com.snit.cl;
 
+import com.snit.cl.entity.Game;
+import com.snit.cl.entity.Player;
 import com.snit.cl.service.GameService;
 import com.snit.cl.service.PlayerService;
+import com.snit.cl.util.IntegerUtil;
 import org.apache.commons.cli.*;
 
 import java.io.PrintWriter;
@@ -20,7 +23,7 @@ public class Cmdlite {
       printHelp();
     } else {
       CommandLineParser parser = new DefaultParser();
-      CommandLine cmd = null;
+      CommandLine cmd;
       try {
         cmd = parser.parse(OPTIONS, args);
         if (cmd.hasOption("l")) {
@@ -54,19 +57,103 @@ public class Cmdlite {
         System.out.println(GAME_SERVICE.getAllGames());
         break;
       default:
-        System.out.println("Available entities:");
-        System.out.println("Player");
-        System.out.println("Game");
+        printEntityInfo();
     }
   }
 
+  private static void printEntityInfo() {
+    System.out.println("Available entities:");
+    System.out.println("Player{name}");
+    System.out.println("Game{blueAttack,blueDefence,redAttack,redDefence,scoreBlue,scoreRed}");
+  }
+
   private static void processCreateEntity(CommandLine cmd) {
+    String[] fieldValues = cmd.getOptionValues("f");
+    if (fieldValues == null || fieldValues.length < 1) {
+      System.out.println("Please use -f option to add fields to entity");
+      printHelp();
+      return;
+    }
+    String optArg = cmd.getOptionValue("c");
+    if (optArg == null) {
+      optArg = "";
+    }
+    switch (optArg) {
+      case "Player":
+        Player player = PLAYER_SERVICE.savePlayer(fieldValues);
+        System.out.println(player == null ? "Cannot create player =(" : player);
+        break;
+      case "Game":
+        Game game = GAME_SERVICE.createGame(fieldValues);
+        System.out.println(game == null ? "Cannot create game =(" : game);
+        break;
+      default:
+        printEntityInfo();
+    }
   }
 
   private static void processDeleteEntity(CommandLine cmd) {
+    String idValue = cmd.getOptionValue("id");
+    if (idValue == null || !IntegerUtil.isInteger(idValue)) {
+      System.out.println("Please use -id option to define id of entity");
+      printHelp();
+      return;
+    }
+    int id = Integer.parseInt(idValue);
+    String optArg = cmd.getOptionValue("d");
+    if (optArg == null) {
+      optArg = "";
+    }
+    switch (optArg) {
+      case "Player":
+        if (PLAYER_SERVICE.deletePlayer(id)) {
+          System.out.println("Player with id= " + id + " has been successfully deleted");
+        } else {
+          System.out.println("Cannot delete player with id= " + id + " =(");
+        }
+        break;
+      case "Game":
+        if (GAME_SERVICE.deleteGame(id)) {
+          System.out.println("Game with id= " + id + " has been successfully deleted");
+        } else {
+          System.out.println("Cannot delete game with id= " + id + " =(");
+        }
+        break;
+      default:
+        printEntityInfo();
+    }
   }
 
   private static void processUpdateEntity(CommandLine cmd) {
+    String idValue = cmd.getOptionValue("id");
+    if (idValue == null || !IntegerUtil.isInteger(idValue)) {
+      System.out.println("Please use -id option to define id of entity");
+      printHelp();
+      return;
+    }
+    int id = Integer.parseInt(idValue);
+    String[] fieldValues = cmd.getOptionValues("f");
+    if (fieldValues == null || fieldValues.length < 1) {
+      System.out.println("Please use -f option to update fields of entity");
+      printHelp();
+      return;
+    }
+    String optArg = cmd.getOptionValue("u");
+    if (optArg == null) {
+      optArg = "";
+    }
+    switch (optArg) {
+      case "Player":
+        Player player = PLAYER_SERVICE.updatePlayer(id, fieldValues);
+        System.out.println(player == null ? "Cannot update player with id= " + id + " =(" : player);
+        break;
+      case "Game":
+        Game game = GAME_SERVICE.updateGame(id, fieldValues);
+        System.out.println(game == null ? "Cannot update game with id= " + id + " =(" : game);
+        break;
+      default:
+        printEntityInfo();
+    }
   }
 
   private static Options buildOptions() {
@@ -90,7 +177,8 @@ public class Cmdlite {
 
     Option fieldsEntity = new Option("f", "fields of entity");
     fieldsEntity.setArgs(10);
-    listEntities.setOptionalArg(true);
+    fieldsEntity.setOptionalArg(true);
+    fieldsEntity.setValueSeparator(',');
 
     Options options = new Options();
 

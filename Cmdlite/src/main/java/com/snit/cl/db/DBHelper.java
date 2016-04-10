@@ -1,11 +1,14 @@
 package com.snit.cl.db;
 
+import com.snit.cl.entity.Game;
 import com.snit.cl.entity.Player;
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.service.ServiceRegistry;
 
 import java.util.ArrayList;
@@ -23,6 +26,8 @@ public class DBHelper {
 
   private DBHelper() {
     Configuration configuration = new Configuration();
+    configuration.addAnnotatedClass(Player.class);
+    configuration.addAnnotatedClass(Game.class);
     configuration.configure();
 
     Properties properties = configuration.getProperties();
@@ -36,21 +41,25 @@ public class DBHelper {
   }
 
   @SuppressWarnings("unchecked")
-  public <T> List<T> getAllEntity(Class entityClass) {
+  public <T> List<T> findAllEntity(Class<T> entityClass) {
     ArrayList<T> players = new ArrayList<>();
     try (Session session = sessionFactory.openSession()) {
-      players.addAll(session.createCriteria(entityClass).list());
+      Criteria criteria = session.createCriteria(entityClass);
+      criteria.add(Restrictions.eq("deleted", false));
+      players.addAll(criteria.list());
+    } catch (HibernateException e) {
+      System.out.println(e);
     }
     return players;
   }
 
-  public boolean savePlayer(Player player) {
-    boolean isSuccess = false;
-    if (player == null) {
+  public boolean saveOrUpdateEntity(Object object) {
+    boolean isSuccess;
+    if (object == null) {
       return false;
     }
     try (Session session = sessionFactory.openSession()) {
-      session.save(player);
+      session.saveOrUpdate(object);
       session.flush();
       isSuccess = true;
     } catch (HibernateException e) {
@@ -59,6 +68,27 @@ public class DBHelper {
     }
     return isSuccess;
 
+  }
+
+  public <T> T findEntity(Class<T> entityClass, int id) {
+    return findEntity(entityClass, id, /*withDeleted*/ false);
+  }
+
+  @SuppressWarnings("unchecked")
+  public <T> T findEntity(Class<T> entityClass, int id, boolean withDeleted) {
+    T entity = null;
+    try (Session session = sessionFactory.openSession()) {
+      Criteria criteria = session.createCriteria(entityClass);
+      if (withDeleted) {
+        criteria.add(Restrictions.eq("id", id));
+      } else {
+        criteria.add(Restrictions.and(Restrictions.eq("deleted", false), Restrictions.eq("id", id)));
+      }
+      entity = (T) criteria.uniqueResult();
+    } catch (HibernateException e) {
+      System.out.println(e);
+    }
+    return entity;
   }
 
 }

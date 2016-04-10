@@ -23,14 +23,50 @@ public class PlayerService {
   }
 
   public List<Player> getAllPlayers() {
-    return DB_HELPER.getAllEntity(Player.class);
+    return DB_HELPER.findAllEntity(Player.class);
   }
 
-  public Player createPlayer(String name) {
+  Player findPlayer(int id) {
+    return findPlayer(id, /*withDeleted*/ false);
+  }
+
+  Player findPlayer(int id, boolean withDeleted) {
+    if (id < 1) {
+      return null;
+    }
+    return DB_HELPER.findEntity(Player.class, id, withDeleted);
+  }
+
+  public Player savePlayer(String[] args) {
+    if (args == null || args.length < 1) {
+      return null;
+    }
     Player player = new Player();
-    player.setName(name);
-    DB_HELPER.savePlayer(player);
-    return player;
+    player.setName(args[0]);
+    return DB_HELPER.saveOrUpdateEntity(player) ? player : null;
   }
 
+  public Player updatePlayer(int id, String[] args) {
+    if (id < 1 || args == null || args.length < 1) {
+      return null;
+    }
+    Player player = findPlayer(id);
+    if (player == null) {
+      return null;
+    }
+    player.setName(args[0]);
+    return DB_HELPER.saveOrUpdateEntity(player) ? player : null;
+  }
+
+  public boolean deletePlayer(int id) {
+    if (id < 1) {
+      return false;
+    }
+    Player player = findPlayer(id);
+    if (player == null) {
+      return false;
+    }
+    player.setDeleted(true);
+    return DB_HELPER.saveOrUpdateEntity(player);
+  }
 }
