@@ -6,10 +6,8 @@ import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.service.ServiceRegistry;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,12 +26,14 @@ public class DBHelper {
     Configuration configuration = new Configuration();
     configuration.addAnnotatedClass(Player.class);
     configuration.addAnnotatedClass(Game.class);
-    configuration.configure();
 
     Properties properties = configuration.getProperties();
+    properties.setProperty("hibernate.connection.driver_class", "org.sqlite.JDBC");
+    properties.setProperty("hibernate.connection.url", "jdbc:sqlite:Cmdlite/database/kicker.s3db");
+    properties.setProperty("hibernate.dialect", "org.hibernate.dialect.SQLiteDialect");
+    properties.setProperty("show_sql", "true");
 
-    ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(properties).build();
-    sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+    sessionFactory = configuration.setProperties(properties).buildSessionFactory();
   }
 
   public static DBHelper getInstance() {
@@ -89,6 +89,10 @@ public class DBHelper {
       System.out.println(e);
     }
     return entity;
+  }
+
+  public void close() {
+    sessionFactory.close();
   }
 
 }

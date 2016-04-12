@@ -1,5 +1,6 @@
 package com.snit.cl;
 
+import com.snit.cl.db.DBHelper;
 import com.snit.cl.entity.Game;
 import com.snit.cl.entity.Player;
 import com.snit.cl.service.GameService;
@@ -42,6 +43,7 @@ public class Cmdlite {
         printHelp();
       }
     }
+    DBHelper.getInstance().close();
   }
 
   private static void processListEntities(CommandLine cmd) {
